@@ -3,7 +3,7 @@ Main test file
 """
 import unittest
 
-from src import (
+from cmn import (
     recursive_search, not_recursive_search, name_formatter,
     get_files, get_scan_files, get_filetypes
 )
@@ -47,17 +47,17 @@ class MainTest(unittest.TestCase):
 
     def test_recursive_search(self):
         """Test recursive_search function"""
-        files = recursive_search("./src")
+        files = recursive_search("./cmn")
         newfiles = [x for x in files if "pycache" not in x and "pytest" not in x]
 
         self.assertSetEqual(
             {
-                './src/test_main.py', './src/__init__.py',
-                './src/__main__.py',
-                './src/change_media_name/change_media_name.py',
-                './src/colored_logger/colored_logger.py',
-                './src/output_formatter/test_output_formatter.py',
-                './src/output_formatter/output_formatter.py'
+                './cmn/test_main.py', './cmn/__init__.py',
+                './cmn/__main__.py',
+                './cmn/change_media_name/change_media_name.py',
+                './cmn/colored_logger/colored_logger.py',
+                './cmn/output_formatter/test_output_formatter.py',
+                './cmn/output_formatter/output_formatter.py'
             },
             set(newfiles),
             "Error in recursive_search_test"
@@ -65,13 +65,13 @@ class MainTest(unittest.TestCase):
 
     def test_not_recursive_search(self):
         """Test not_recursive_search function"""
-        result = not_recursive_search("./src")
+        result = not_recursive_search("./cmn")
 
         self.assertSetEqual(
             {
-                './src/test_main.py',
-                './src/__init__.py',
-                './src/__main__.py'
+                './cmn/test_main.py',
+                './cmn/__init__.py',
+                './cmn/__main__.py'
             },
             set(result),
             "Error in not_recursive_search_test"
@@ -81,25 +81,25 @@ class MainTest(unittest.TestCase):
         """Test get_files function"""
         samples = [
             {
-                "paths": ["./src"],
+                "paths": ["./cmn"],
                 "recursive": True,
                 "expected": {
-                    './src/test_main.py',
-                    './src/__init__.py',
-                    './src/__main__.py',
-                    './src/change_media_name/change_media_name.py',
-                    './src/colored_logger/colored_logger.py',
-                    './src/output_formatter/test_output_formatter.py',
-                    './src/output_formatter/output_formatter.py'
+                    './cmn/test_main.py',
+                    './cmn/__init__.py',
+                    './cmn/__main__.py',
+                    './cmn/change_media_name/change_media_name.py',
+                    './cmn/colored_logger/colored_logger.py',
+                    './cmn/output_formatter/test_output_formatter.py',
+                    './cmn/output_formatter/output_formatter.py'
                 }
             },
             {
-                "paths": ["./src"],
+                "paths": ["./cmn"],
                 "recursive": False,
                 "expected": {
-                    './src/test_main.py',
-                    './src/__init__.py',
-                    './src/__main__.py'
+                    './cmn/test_main.py',
+                    './cmn/__init__.py',
+                    './cmn/__main__.py'
                 }
             }
         ]
@@ -170,24 +170,24 @@ class MainTest(unittest.TestCase):
         """Test get_scan_files function"""
         samples = [
             {
-                "input_files": ["./src"],
+                "input_files": ["./cmn"],
                 "recursive": True,
                 "ignored_paths": [],
                 "not_ignore_subfolders": False,
                 "filetypes": [".py"],
                 "expected":
                     {
-                        './src/test_main.py',
-                        './src/__init__.py',
-                        './src/__main__.py',
-                        './src/change_media_name/change_media_name.py',
-                        './src/colored_logger/colored_logger.py',
-                        './src/output_formatter/test_output_formatter.py',
-                        './src/output_formatter/output_formatter.py'
+                        './cmn/test_main.py',
+                        './cmn/__init__.py',
+                        './cmn/__main__.py',
+                        './cmn/change_media_name/change_media_name.py',
+                        './cmn/colored_logger/colored_logger.py',
+                        './cmn/output_formatter/test_output_formatter.py',
+                        './cmn/output_formatter/output_formatter.py'
                     }
             },
             {
-                "input_files": ["./src"],
+                "input_files": ["./cmn"],
                 "recursive": False,
                 "ignored_paths": ["."],
                 "not_ignore_subfolders": False,
@@ -195,24 +195,24 @@ class MainTest(unittest.TestCase):
                 "expected": set()
             },
             {
-                "input_files": ["./src"],
+                "input_files": ["./cmn"],
                 "recursive": True,
-                "ignored_paths": ["./src/change_media_name"],
+                "ignored_paths": ["./cmn/change_media_name"],
                 "not_ignore_subfolders": True,
                 "filetypes": [".py"],
                 "expected": {
-                    './src/test_main.py',
-                    './src/__init__.py',
-                    './src/__main__.py',
-                    './src/colored_logger/colored_logger.py',
-                    './src/output_formatter/test_output_formatter.py',
-                    './src/output_formatter/output_formatter.py'
+                    './cmn/test_main.py',
+                    './cmn/__init__.py',
+                    './cmn/__main__.py',
+                    './cmn/colored_logger/colored_logger.py',
+                    './cmn/output_formatter/test_output_formatter.py',
+                    './cmn/output_formatter/output_formatter.py'
                 }
             },
             {
-                "input_files": ["./src"],
+                "input_files": ["./cmn"],
                 "recursive": True,
-                "ignored_paths": ["./src/colored_logger"],
+                "ignored_paths": ["./cmn/colored_logger"],
                 "not_ignore_subfolders": False,
                 "filetypes": [],
                 "expected": set()

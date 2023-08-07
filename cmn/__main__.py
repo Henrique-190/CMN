@@ -6,9 +6,9 @@ __version__ = "2.0.0"
 import argparse
 from datetime import datetime
 
-from src.colored_logger.colored_logger import ColoredLogger
-from src.change_media_name.change_media_name import cmn
-from src import get_filetypes, get_scan_files, name_formatter
+from cmn.colored_logger.colored_logger import ColoredLogger
+from cmn.change_media_name.change_media_name import cmn
+from cmn import get_filetypes, get_scan_files, name_formatter
 
 
 def main():

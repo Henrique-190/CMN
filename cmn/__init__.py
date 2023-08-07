@@ -7,7 +7,7 @@ import os
 import re
 from datetime import datetime
 
-from src.colored_logger.colored_logger import ColoredLogger
+from cmn.colored_logger.colored_logger import ColoredLogger
 
 logger = ColoredLogger()
 

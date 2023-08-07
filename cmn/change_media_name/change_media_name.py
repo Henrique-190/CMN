@@ -8,8 +8,8 @@ import subprocess
 from datetime import datetime
 from shutil import which
 
-from src.colored_logger.colored_logger import ColoredLogger
-from src.output_formatter.output_formatter import (
+from cmn.colored_logger.colored_logger import ColoredLogger
+from cmn.output_formatter.output_formatter import (
     ImageRegularformatter,
     VideoRegularformatter,
     AVIformatter
