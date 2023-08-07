@@ -112,7 +112,7 @@ def cmn(coloredLog: ColoredLogger, files: list[str], newFolder: bool, nameFormat
     global logger, n_errors, completed
     logger = coloredLog
     command = checkExiftool()
-    percentage = 100 / (2 * (len(files)))
+    percentage = max(100 / (2 * (len(files))), 100)
     completed = 0.00
     if not command:
         logger.critical("Exiftool program/Command missing. Please install it: https://exiftool.org/install.html")
