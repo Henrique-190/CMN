@@ -44,5 +44,3 @@ cmn -i <input-files> [options]
 
 ## Requirements
 - Install `exiftool` command from https://exiftool.org/. Credits to Phil Harvey.
-
-## Made by me :)
