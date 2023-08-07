@@ -2,19 +2,24 @@
 CMN - Common functions
 """
 __version__ = "1.0.1"
+
 import os
 import subprocess
 from datetime import datetime
 from shutil import which
 
-from src import ColoredLogger
-from src.OutputFormatter.OutputFormatter import ImageRegularformatter, VideoRegularformatter, AVIformatter
+from src.colored_logger.colored_logger import ColoredLogger
+from src.output_formatter.output_formatter import (
+    ImageRegularformatter,
+    VideoRegularformatter,
+    AVIformatter
+)
 
 NewNameFile = '{year}{month}{day}_{hour}{minute}{second}{filetype}'
 NewNameFolder = '{year}-{month}-{day}'
 
-nChanged = 0
-nErrors = 0
+n_changed = 0
+n_errors = 0
 completed = 0.0
 
 logger: ColoredLogger
@@ -38,7 +43,10 @@ def checkExiftool() -> bool:
 def getDateTime(file: str) -> tuple:
     global logger
     try:
-        output = subprocess.check_output(["exiftool", file], shell=True, text=True, stderr=subprocess.STDOUT)
+        output = subprocess.check_output(
+            ["exiftool", file],
+            shell=True, text=True, stderr=subprocess.STDOUT
+        )
         output = output.strip()
         return formatters[os.path.splitext(file)[1].lower()](output).getGroups()
     except (Exception,):
@@ -61,8 +69,11 @@ def createFolder(folderFormat: str, date: tuple[str]) -> str:
     return folder
 
 
-def changeFileName(oldPath: str, newPath: str, oldFile: str, nameFormat: str, date_tuple: tuple[str]):
-    global nChanged, nErrors, logger
+def changeFileName(
+        oldPath: str, newPath: str, oldFile: str,
+        nameFormat: str, date_tuple: tuple[str]
+):
+    global n_changed, n_errors, logger
 
     date_str = "".join(date_tuple)
     if len(date_tuple) == 7:
@@ -90,22 +101,22 @@ def changeFileName(oldPath: str, newPath: str, oldFile: str, nameFormat: str, da
     try:
         os.rename(os.path.join(oldPath, oldFile), os.path.join(newPath, new))
         logger.success(f"{completed:.2f}% - Changed {oldFile} to {new}")
-        nChanged += 1
+        n_changed += 1
     except (Exception,) as e:
         logger.error(f"{completed:.2f}% - Error while changing name of {oldFile}: {e}")
-        nErrors += 1
+        n_errors += 1
 
 
 def cmn(coloredLog: ColoredLogger, files: list[str], newFolder: bool, nameFormat: str, folderFormat: str) -> \
-        (int, int, int):
-    global logger, nErrors, completed
+        (int, int):
+    global logger, n_errors, completed
     logger = coloredLog
     command = checkExiftool()
-    percentage = 100 / (2*(len(files)))
+    percentage = 100 / (2 * (len(files)))
     completed = 0.00
     if not command:
         logger.critical("Exiftool program/Command missing. Please install it: https://exiftool.org/install.html")
-        return 0, 0, 1
+        return 0, 1
 
     for file in files:
         completed += percentage
@@ -139,10 +150,11 @@ def cmn(coloredLog: ColoredLogger, files: list[str], newFolder: bool, nameFormat
             changeFileName(oldpath, newpath, oldfile, nameFormat, date)
         except (Exception,):
             logger.error(f"{completed:.2f}% - Error getting new path of {file}.")
-            nErrors += 1
+            n_errors += 1
             continue
 
-    return nChanged, nErrors
+    return n_changed, n_errors
+
 
 if __name__ == "__main__":
     print("dont")

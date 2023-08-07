@@ -1,13 +1,13 @@
 """
 Main - Module responsible for the main program. Parses the arguments and calls the other modules.
 """
-__version__ = "1.9.0"
+__version__ = "1.9.1"
 
 import os
 import re
 from datetime import datetime
 
-from src.ColoredLogger.ColoredLogger import ColoredLogger
+from src.colored_logger.colored_logger import ColoredLogger
 
 logger = ColoredLogger()
 
@@ -15,12 +15,11 @@ images_supported = [".jpg", ".jpeg", ".png", ".heic", ".webp"]
 videos_supported = ['.mp4', '.avi', '.mov']
 
 
-# Checks if the name format is valid
-def nameFormatter(nf: str, aux: str) -> bool:
-    global logger
+def name_formatter(name_f: str, aux: str) -> bool:
+    """Checks if the name format is valid"""
     logger.debug(f"Parsing {aux}name format")
-    now = datetime.now().strftime(nf)
-    nowdate = datetime.strptime(now, nf)
+    now = datetime.now().strftime(name_f)
+    nowdate = datetime.strptime(now, name_f)
 
     if nowdate.year == 1900 and nowdate.month == 1 and nowdate.day == 1:
         logger.critical(f"The {aux}name format is not valid for a date.")
@@ -41,45 +40,49 @@ def nameFormatter(nf: str, aux: str) -> bool:
     return True
 
 
-# Gets the files from the path searching subfolders
-def recursiveSearch(path: str) -> list[str]:
+def recursive_search(path: str) -> list[str]:
+    """Gets the files from the path searching subfolders"""
     files: list[str] = []
-    for root, dirs, f in os.walk(path):
-        for file in f:
+    for root, _, filelist in os.walk(path):
+        for file in filelist:
             files.append(os.path.join(root, file))
     return [x.replace("\\", "/") for x in files]
 
 
-# Gets the files from the path without searching subfolders
-def notRecursiveSearch(path: str) -> list[str]:
-    return [os.path.join(path, x).replace("\\", "/") for x in os.listdir(path) if os.path.isfile(os.path.join(path, x))]
+def not_recursive_search(path: str) -> list[str]:
+    """Gets the files from the path without searching subfolders"""
+    return [
+        os.path.join(path, x)
+        .replace("\\", "/") for x in os.listdir(path) if os.path.isfile(os.path.join(path, x))
+    ]
 
 
-# Gets the files from the paths
-def getFiles(paths: list[str], recursive: bool) -> list[str]:
-    global logger
+def get_files(paths: list[str], recursive: bool) -> list[str]:
+    """Gets the files from the paths"""
     files: list[str] = []
     for path in paths:
         if not os.path.exists(path):
-            raise BaseException(f"The path '{path}' does not exist.")
-        elif os.path.isfile(path):
+            raise FileNotFoundError(f"The path '{path}' does not exist.")
+
+        if os.path.isfile(path):
             files.append(path)
         else:
             if recursive:
-                files += recursiveSearch(path)
+                files += recursive_search(path)
             else:
-                files += notRecursiveSearch(path)
+                files += not_recursive_search(path)
     return files
 
 
-# Gets the files to scan based on the arguments
-def getScanFiles(input_files: list[str], recursive: bool, ignored_paths: list[str], not_ignore_subfolders: bool,
-                 filetypes: list[str]) -> list[str]:
-    global logger
+def get_scan_files(
+        input_files: list[str], recursive: bool, ignored_paths: list[str],
+        not_ignore_subfolders: bool, filetypes: list[str]
+) -> list[str]:
+    """Gets the files to scan based on the arguments"""
     logger.debug("Getting files to scan")
 
-    files = getFiles(input_files, recursive)
-    ignored = getFiles(ignored_paths, not_ignore_subfolders)
+    files = get_files(input_files, recursive)
+    ignored = get_files(ignored_paths, not_ignore_subfolders)
 
     files = [x for x in files if x not in ignored and os.path.splitext(x)[1].lower() in filetypes]
     length = len(files)
@@ -89,9 +92,11 @@ def getScanFiles(input_files: list[str], recursive: bool, ignored_paths: list[st
     return files
 
 
-# Gets the file types to scan based on the arguments
-def getFiletypes(file_types: list[str], only_images: bool, only_videos: bool, not_file_types: list[str]) -> list[str]:
-    global logger
+def get_filetypes(
+        file_types: list[str], only_images: bool,
+        only_videos: bool, not_file_types: list[str]
+) -> list[str]:
+    """Gets the file types to scan based on the arguments"""
     logger.debug("Getting file types to scan")
     supported = images_supported + videos_supported
     filetypes = []

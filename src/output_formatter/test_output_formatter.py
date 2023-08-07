@@ -1,6 +1,6 @@
 import unittest
 
-from src.OutputFormatter.OutputFormatter import ImageRegularformatter, VideoRegularformatter, AVIformatter
+from output_formatter import ImageRegularformatter, VideoRegularformatter, AVIformatter
 
 
 class OutputFormatterTest(unittest.TestCase):
