@@ -1,9 +1,14 @@
 # ChangeMediaName
 Tool that changes media files to its creation date.
 
+## Installation
+```
+pip install cmn
+```
+
 ## Usage
 ```
-python3 ChangeMediaName.py -i <paths>
+cmn -i <input-files> [options]
 ```
 
 ## Options
