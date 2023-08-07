@@ -26,8 +26,8 @@ cmn -i <input-files> [options]
 | of       | only-images           | Default: `False`. Consider only images                                |
 | ov       | only-videos           | Default: `False`. Consider only videos                                |
 | cf       | create-new-folders    | Default: `False`. Create new folders according to the new image names |
-| fn       | name-format           | Default:`%Y%m%d_%H%M%S` Format of the new names                       |
-| ff       | name-folder-format    | Default:`%Y - %m - %d`. Format of the new folder names                |
+| fn       | name-format           | Default: `%Y%m%d_%H%M%S`. Format of the new names                     |
+| ff       | name-folder-format    | Default: `%Y - %m - %d`. Format of the new folder names               |
 
 
 ## Supported file types
