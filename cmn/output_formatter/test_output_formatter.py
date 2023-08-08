@@ -51,6 +51,11 @@ class OutputFormatterTest(unittest.TestCase):
                 "formatter": ImageRegularformatter,
                 "expected": ("2023", "07", "16", "17", "13", "57")
             },
+            {
+                "output": "Date/Time Original                    : 2023:07:16 17:13:60",
+                "formatter": ImageRegularformatter,
+                "expected": ()
+            },
         ]
         for i in range(0, len(samples)):
             actual = samples[i]["formatter"](samples[i]["output"]).getGroups()

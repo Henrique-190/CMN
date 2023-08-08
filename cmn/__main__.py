@@ -59,6 +59,10 @@ def main():
         args.input_files, args.recursive, args.ignored_paths, args.not_ignore_subfolders, filetypes
     )
 
+    if not files:
+        logger.error("No files found.")
+        return
+
     n_changed, n_errors = cmn(
         logger, files, args.create_new_folders, args.name_format, args.name_folder_format
     )
